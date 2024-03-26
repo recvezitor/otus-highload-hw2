@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgres-otus-db:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    command: -c 'max_connections=10000'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      PGDATA: /tmp
+    volumes:
+      - ./01-schema-init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  otus-highload-hw2:
+    image: recvezitor/otus-highload-hw2:latest
+    depends_on:
+      - postgres-otus-db
+    ports:
+      - "8080:8080"
+    environment:
+      JAVA_OPTS_ADD: -XX:MinRAMPercentage=25 -XX:MaxRAMPercentage=50 -XX:+PrintFlagsFinal
+      DB_URL: postgresql://postgres-otus-db:5432/postgres
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_POOL_SIZE: 100
+      DB_POOL_IDLE_TIME: PT30s
+      DB_POOL_MAX_TIME: PT60s
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "1024M"
+        reservations:
+          cpus: "0.5"
+          memory: "256M"

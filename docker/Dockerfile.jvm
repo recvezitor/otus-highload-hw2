@@ -1,0 +1,10 @@
+FROM openjdk:17-jdk-slim
+# We make four distinct layers so if there are application changes the library layers can be re-used
+COPY --chown=185 target/quarkus-app/lib/ /deployments/lib/
+COPY --chown=185 target/quarkus-app/*.jar /deployments/
+COPY --chown=185 target/quarkus-app/app/ /deployments/app/
+COPY --chown=185 target/quarkus-app/quarkus/ /deployments/quarkus/
+ENV JAVA_OPTS_ADD=""
+EXPOSE 8080
+USER 185
+CMD java $JAVA_OPTS_ADD -jar ./deployments/quarkus-run.jar

@@ -1,0 +1,59 @@
+###
+GET {{protocol}}{{host}}/q/health
+
+###
+GET {{protocol}}{{host}}/q/info
+
+###
+POST {{protocol}}{{host}}/user/register
+Content-Type: application/json
+
+{
+  "first_name": "runner",
+  "second_name": "runner",
+  "birthdate": "2012-02-03",
+  "biography": "bio",
+  "city": "city-city",
+  "password": "123"
+}
+
+> {%
+    client.global.set("user_id", response.body.user_id);
+%}
+
+###
+POST {{protocol}}{{host}}/login
+Content-Type: application/json
+
+{
+  "id": "{{user_id}}",
+  "password": "123"
+}
+
+> {%
+    client.global.set("auth_token", response.body.token);
+%}
+
+###
+GET {{protocol}}{{host}}/user/get/{{user_id}}
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+###
+GET {{protocol}}{{host}}/user/search/?first_name=r&last_name=R
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
