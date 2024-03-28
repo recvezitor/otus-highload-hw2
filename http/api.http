@@ -57,3 +57,15 @@ Authorization: Bearer {{auth_token}}
         client.assert(response.status === 200, "Response status is not 200");
     });
 %}
+
+###
+GET {{protocol}}{{host}}/user/city/Сочи
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}

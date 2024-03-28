@@ -3,7 +3,7 @@ package com.dimas.service;
 import com.dimas.domain.PersonCreate;
 import com.dimas.domain.entity.Person;
 import com.dimas.domain.mapper.PersonMapper;
-import com.dimas.openapi.model.ApiUser;
+import com.dimas.api.model.ApiUser;
 import com.dimas.persistence.PersonRepository;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -60,5 +60,9 @@ public class PersonService {
                 .map(list -> list.stream().map(personMapper::map).toList());
     }
 
+
+    public Uni<Integer> findByCity(String city) {
+        return personRepository.findByCity(city);
+    }
 
 }

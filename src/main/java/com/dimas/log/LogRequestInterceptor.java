@@ -27,11 +27,11 @@ public class LogRequestInterceptor {
 
     private void doLog(InvocationContext context) {
         if (!isNull(currentRequest) && isEnabledByProperty("rest-logging.enabled")) {
-            log.info("{} {}", currentRequest.method(), currentRequest.absoluteURI());
+            log.debug("{} {}", currentRequest.method(), currentRequest.absoluteURI());
             for (var entry : currentRequest.headers()) {
-                log.info("[{}]:{}", entry.getKey(), entry.getValue());
+                log.debug("[{}]:{}", entry.getKey(), entry.getValue());
             }
-            log.info("Request args: {}", context.getParameters());
+            log.debug("Request args: {}", context.getParameters());
         }
     }
 

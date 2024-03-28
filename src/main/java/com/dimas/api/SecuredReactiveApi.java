@@ -1,12 +1,11 @@
-package com.dimas.controller;
+package com.dimas.api;
 
+import com.dimas.api.model.ApiLoginPost200Response;
+import com.dimas.api.model.ApiLoginPostRequest;
+import com.dimas.api.model.ApiUser;
+import com.dimas.api.model.ApiUserRegisterPost200Response;
+import com.dimas.api.model.ApiUserRegisterPostRequest;
 import com.dimas.controller.filter.Secured;
-import com.dimas.openapi.model.ApiLoginPost200Response;
-import com.dimas.openapi.model.ApiLoginPostRequest;
-import com.dimas.openapi.model.ApiUser;
-import com.dimas.openapi.model.ApiUserRegisterPost200Response;
-import com.dimas.openapi.model.ApiUserRegisterPostRequest;
-import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.Consumes;
@@ -33,9 +32,7 @@ public interface SecuredReactiveApi {
     @Path("/login")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    Uni<ApiLoginPost200Response> loginPost(
-            ApiLoginPostRequest apiLoginPostRequest
-    );
+    Uni<ApiLoginPost200Response> loginPost(ApiLoginPostRequest apiLoginPostRequest);
 
     /**
      * Получение анкеты пользователя
@@ -46,9 +43,19 @@ public interface SecuredReactiveApi {
     @Path("/user/get/{id}")
     @Produces({"application/json"})
     @Secured
-    Uni<ApiUser> userGetIdGet(
-            @GeneratedParam("id") @PathParam("id") String id
-    );
+    Uni<ApiUser> userGetIdGet(@PathParam("id") String id);
+
+
+    /**
+     * Получение количества пользователей в одном городе. Для проверки индексов на равенство
+     *
+     * @param city название города
+     */
+    @GET
+    @Path("/user/city/{city}")
+    @Produces({"application/json"})
+    @Secured
+    Uni<Integer> userFromCity(@PathParam("city") String city);
 
     /**
      * Регистрация нового пользователя
@@ -59,9 +66,7 @@ public interface SecuredReactiveApi {
     @Path("/user/register")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    Uni<ApiUserRegisterPost200Response> userRegisterPost(
-            ApiUserRegisterPostRequest apiUserRegisterPostRequest
-    );
+    Uni<ApiUserRegisterPost200Response> userRegisterPost(ApiUserRegisterPostRequest apiUserRegisterPostRequest);
 
     /**
      * Поиск анкет

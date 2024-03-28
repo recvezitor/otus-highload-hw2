@@ -56,11 +56,6 @@
             <version>${mapstruct.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>io.quarkiverse.openapi.generator</groupId>
-            <artifactId>quarkus-openapi-generator</artifactId>
-            <version>${quarkus-openapi-generator.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>org.mindrot</groupId>
@@ -199,18 +194,16 @@
             </plugin>
         </plugins>
     </build>
-    <!--    <profiles>-->
-    <!--        <profile>-->
-    <!--            <id>native</id>-->
-    <!--            <activation>-->
-    <!--                <property>-->
-    <!--                    <name>native</name>-->
-    <!--                </property>-->
-    <!--            </activation>-->
-    <!--            <properties>-->
-    <!--                <skipITs>false</skipITs>-->
-    <!--                <quarkus.package.type>native</quarkus.package.type>-->
-    <!--            </properties>-->
-    <!--        </profile>-->
-    <!--</profiles>-->
+    <profiles>
+        <profile>
+            <id>openapi</id>
+            <dependencies>
+                <dependency>
+                    <groupId>io.quarkiverse.openapi.generator</groupId>
+                    <artifactId>quarkus-openapi-generator</artifactId>
+                    <version>${quarkus-openapi-generator.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>

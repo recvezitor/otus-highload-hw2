@@ -1,12 +1,12 @@
 package com.dimas.controller;
 
+import com.dimas.api.SecuredReactiveApi;
+import com.dimas.api.model.ApiLoginPost200Response;
+import com.dimas.api.model.ApiLoginPostRequest;
+import com.dimas.api.model.ApiUser;
+import com.dimas.api.model.ApiUserRegisterPost200Response;
+import com.dimas.api.model.ApiUserRegisterPostRequest;
 import com.dimas.domain.mapper.PersonMapper;
-import com.dimas.log.LogRequest;
-import com.dimas.openapi.model.ApiLoginPost200Response;
-import com.dimas.openapi.model.ApiLoginPostRequest;
-import com.dimas.openapi.model.ApiUser;
-import com.dimas.openapi.model.ApiUserRegisterPost200Response;
-import com.dimas.openapi.model.ApiUserRegisterPostRequest;
 import com.dimas.service.PersonService;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -19,7 +19,6 @@ import java.util.UUID;
 @Slf4j
 @ApplicationScoped
 @RequiredArgsConstructor
-@LogRequest
 public class OpenApiController implements SecuredReactiveApi {
 
     private final PersonService personService;
@@ -35,6 +34,11 @@ public class OpenApiController implements SecuredReactiveApi {
     public Uni<ApiUser> userGetIdGet(String id) {
         return personService.findById(UUID.fromString(id))
                 .map(personMapper::map);
+    }
+
+    @Override
+    public Uni<Integer> userFromCity(String city) {
+        return personService.findByCity(city);
     }
 
     @Override

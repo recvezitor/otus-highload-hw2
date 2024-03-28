@@ -80,7 +80,7 @@ public class PersonRepository {
 
     public Uni<List<Person>> search(String firstName, String lastName) {//warn, no paging
         final var query = """
-                select * from %s.person where lower(first_name) LIKE $1 AND lower(second_name) LIKE $2 LIMIT 100
+                select * from %s.person where first_name ILIKE $1 AND second_name ILIKE $2 LIMIT 100
                 """.formatted(SCHEMA_NAME);
         return pgPool.preparedQuery(query)
                 .execute(Tuple.tuple()
@@ -119,6 +119,20 @@ public class PersonRepository {
                 .addString(request.getCity())
                 .addLocalDateTime(LocalDateTime.now())
                 .addString(request.getPassword());
+    }
+
+    public Uni<Integer> findByCity(String city) {
+        final var query = """
+                select count(*) from %s.person where city = $1
+                """.formatted(SCHEMA_NAME);
+        return pgPool.preparedQuery(query)
+                .execute(Tuple.tuple().addString(city))
+                .onItem().transformToUni(rowSet -> {
+                    for (Row row : rowSet) {
+                        return Uni.createFrom().item(row.getInteger("count"));
+                    }
+                    return Uni.createFrom().nullItem();
+                });
     }
 
 }
