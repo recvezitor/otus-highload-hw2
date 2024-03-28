@@ -12,7 +12,7 @@
 2. Запрос на поиск:
    `select * from %s.person where first_name ILIKE $1 AND second_name ILIKE $2 LIMIT 100`
 3. Результирующая сравнительная таблица нагрузочного тестирования с индексом и без, для throughput и latency, для 1, 10, 100 и 1000 одновременных потоков
-   Average throughput, request per second:
+   Average throughput, requests per second:
 
 | threads | no index | with index |
 |:-------:|:--------:|:----------:|
@@ -30,10 +30,22 @@ Average latency, milliseconds:
 |   100   |   1815   |     85     |
 |  1000   |  17420   |    945     |
 
-4. Графики throughput и latency в папке `report/no_idx` `report/with_indx`
-5. Запрос создания индекса:
+4. Графики throughput и latency в папке `report/no_idx` `report/with_indx`   
+   No index, 100 threads, RPS:
+   ![ast text](report/no_idx/0100_threads-rps.PNG "No index, 100 threads, RPS")
+
+   With index, 100 threads, RPS:
+   ![alt text](report/with_indx/0100_threads-rps.PNG "With index, 100 threads, RPS")
+   
+   No index, 100 threads, Latency, ms:
+   ![ast text](report/no_idx/0100_threads-latency.PNG "No index, 100 threads, Latency")
+
+   With index, 100 threads, Latency, ms:
+   ![alt text](report/with_indx/0100_threads-latency.PNG "With index, 100 threads, Latency")
+ 
+5. Запрос создания индекса:   
    `CREATE INDEX index_users_full_name ON otus_highload.person using gin (first_name gin_trgm_ops, second_name gin_trgm_ops);`
-6. explain запроса   
+6. explain запроса:   
    ```explain analyze select count(*) from otus_highload.person where first_name ILIKE 'А%' AND second_name ILIKE 'Б%';```
 ```
    Aggregate  (cost=1579.21..1579.22 rows=1 width=8) (actual time=0.574..0.575 rows=1 loops=1)
