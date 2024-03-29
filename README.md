@@ -13,7 +13,7 @@
    `select * from %s.person where first_name ILIKE $1 AND second_name ILIKE $2 LIMIT 100`
 3. Результирующая сравнительная таблица нагрузочного тестирования с индексом и без, для throughput и latency, для 1, 10, 100 и 1000 одновременных потоков
 
-   Average throughput, requests per second:
+Average throughput, requests per second:
 
 | threads | no index | with index |
 |:-------:|:--------:|:----------:|
@@ -33,16 +33,16 @@ Average latency, milliseconds:
 
 4. Графики throughput и latency в папке `report/no_idx` `report/with_indx`   
    No index, 100 threads, RPS:
-   ![ast text](report/no_idx/0100_threads-rps.PNG "No index, 100 threads, RPS")
+   ![No index, 100 threads, RPS](report/no_idx/0100_threads-rps.PNG "No index, 100 threads, RPS")
 
    With index, 100 threads, RPS:
-   ![alt text](report/with_indx/0100_threads-rps.PNG "With index, 100 threads, RPS")
+   ![With index, 100 threads, RPS](report/with_indx/0100_threads-rps.PNG "With index, 100 threads, RPS")
    
    No index, 100 threads, Latency, ms:
-   ![ast text](report/no_idx/0100_threads-latency.PNG "No index, 100 threads, Latency")
+   ![No index, 100 threads, Latency](report/no_idx/0100_threads-latency.PNG "No index, 100 threads, Latency")
 
    With index, 100 threads, Latency, ms:
-   ![alt text](report/with_indx/0100_threads-latency.PNG "With index, 100 threads, Latency")
+   ![With index, 100 threads, Latency](report/with_indx/0100_threads-latency.PNG "With index, 100 threads, Latency")
  
 5. Запрос создания индекса:   
    `CREATE INDEX index_users_full_name ON otus_highload.person using gin (first_name gin_trgm_ops, second_name gin_trgm_ops);`
