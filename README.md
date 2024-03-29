@@ -12,6 +12,7 @@
 2. Запрос на поиск:
    `select * from %s.person where first_name ILIKE $1 AND second_name ILIKE $2 LIMIT 100`
 3. Результирующая сравнительная таблица нагрузочного тестирования с индексом и без, для throughput и latency, для 1, 10, 100 и 1000 одновременных потоков
+
    Average throughput, requests per second:
 
 | threads | no index | with index |
